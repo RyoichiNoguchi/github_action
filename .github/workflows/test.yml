@@ -13,5 +13,5 @@ jobs:
         id: latest-tag
         with:
           script: |
-            const a = ${{context.payload.pull_request.title}};
+            const a = context.payload.pull_request.title;
             console.log(a);
