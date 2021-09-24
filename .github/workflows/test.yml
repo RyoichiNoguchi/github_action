@@ -11,4 +11,5 @@ jobs:
         id: latest-tag
         with:
           script: |
-            console.log(${{ github.event }})
+            const a = ${{ github.event }};
+            console.log(JSON.stringify(a));
