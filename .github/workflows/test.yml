@@ -1,7 +1,9 @@
 name: Create Release
 on:
-  push:
-    branches: [main]
+  pull_request:
+    branches:
+      - main
+    types: [closed]
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -11,5 +13,5 @@ jobs:
         id: latest-tag
         with:
           script: |
-            const a = ${{ github.event }};
-            console.log(JSON.stringify(a));
+            const a = ${{context.payload.pull_request.title}};
+            console.log(a);
