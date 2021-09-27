@@ -8,10 +8,52 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Check latest tag
         uses: actions/github-script@v4
         id: latest-tag
         with:
           script: |
-            const a = context.payload.pull_request.title;
-            console.log(a);
+            const releases = await github.repos.listReleases({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+            const latestRelease = releases.data[0].tag_name;
+            return latestRelease;
+      - name: Generate new tag name
+        uses: actions/github-script@v4
+        id: new_tag
+        with:
+          script: |
+            const latestRelease = ${{steps.latest-tag.outputs.result}}
+            const jstNow = new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000));
+            const year = jstNow.getFullYear();
+            const month = ('00'+(jstNow.getMonth() + 1)).slice(-2);
+            const day = ('00'+jstNow.getDate()).slice(-2);
+            const today = `${year}${month}${day}`;
+            const major = 1;
+            const minor = today;
+            let patch;
+            if (latestRelease.includes(today)) {
+              patch = Number(latestRelease.split('.')[2]) + 1;
+            } else {
+              patch = 1;
+            }
+            const newVersion = [major,minor,patch].join('.');
+            return newVersion;
+      - name: Create tag and release
+        uses: actions/github-script@v4
+        id: create_tag_and_release
+        with:
+          script: |
+            const newVersion = ${{steps.new_tag.outputs.result}};
+            await github.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: newVersion,
+              name: newVersion,
+              body: context.payload.pull_request.title,
+              draft: false,
+              prerelease: false
+            })
