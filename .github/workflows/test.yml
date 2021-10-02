@@ -48,7 +48,7 @@ jobs:
         with:
           script: |
             const newVersion = ${{steps.new_tag.outputs.result}};
-            const releaseBody = context.payload.pull_request.number + ' ' + context.payload.pull_request.title
+            const releaseBody = '#' + context.payload.pull_request.number + ' ' + context.payload.pull_request.title
             await github.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
