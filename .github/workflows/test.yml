@@ -11,7 +11,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Check latest tag
-        uses: actions/github-script@v5
+        uses: actions/github-script@v4
         id: latest-tag
         with:
           script: |
@@ -22,7 +22,7 @@ jobs:
             const latestRelease = releases.data[0].tag_name;
             return latestRelease;
       - name: Generate new tag name
-        uses: actions/github-script@v5
+        uses: actions/github-script@v4
         id: new_tag
         with:
           script: |
@@ -43,7 +43,7 @@ jobs:
             const newVersion = [major,minor,patch].join('.');
             return newVersion;
       - name: Create tag and release
-        uses: actions/github-script@v5
+        uses: actions/github-script@v4
         id: create_tag_and_release
         with:
           script: |
