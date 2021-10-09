@@ -10,7 +10,7 @@ jobs:
         id: hello
         uses: RyoichiNoguchi/jira-action@v1
         with:
-          username: ${{ secrets.JIRA_USERNAME }}
+          username: ${{ secrets.JRIA_USERNAME }}
           password: ${{ secrets.JIRA_PASSWORD }}
           domain: ${{ secrets.JIRA_DOMAIN }}
           projectId: ${{ secrets.JIRA_PROJECT_ID }}
