@@ -67,7 +67,7 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const jiraReleaseName = "test " + ${{steps.new_tag.outputs.result}};
+            const jiraReleaseName = 'test ' + ${{steps.new_tag.outputs.result}};
             return jiraReleaseName;
       - name: Create jira release
         id: create_jira_release
