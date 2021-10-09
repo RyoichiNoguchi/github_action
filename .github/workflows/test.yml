@@ -25,6 +25,7 @@ jobs:
         uses: actions/github-script@v4
         id: new_tag
         with:
+          result-encoding: string
           script: |
             const latestRelease = ${{steps.latest-tag.outputs.result}}
             const jstNow = new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000));
@@ -59,7 +60,15 @@ jobs:
               draft: false,
               prerelease: false
             });
-            return "test "+ response.data.html_url;
+            return response.data.html_url;
+      - name: Create jira release name
+        uses: actions/github-script@v4
+        id: create_jira_release_name
+        with:
+          result-encoding: string
+          script: |
+            const jiraReleaseName = "test " + ${{steps.new_tag.outputs.result}};
+            return jiraReleaseName;
       - name: Create jira release
         id: create_jira_release
         uses: RyoichiNoguchi/jira-action@v1.0.0
@@ -68,6 +77,6 @@ jobs:
           password: ${{ secrets.JIRA_PASSWORD }}
           domain: ${{ secrets.JIRA_DOMAIN }}
           projectId: ${{ secrets.JIRA_PROJECT_ID }}
-          releaseName: ${{steps.new_tag.outputs.result}}
+          releaseName: ${{steps.create_jira_release_name.outputs.result}}
           description: ${{steps.create_tag_and_release.outputs.result}}
           issueKeyText: ${{ secrets.TEST_KEY_TEXT }}
