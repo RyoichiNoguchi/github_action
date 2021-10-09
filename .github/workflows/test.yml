@@ -45,8 +45,8 @@ jobs:
       - name: Create tag and release
         uses: actions/github-script@v4
         id: create_tag_and_release
-        result-encoding: string
         with:
+          result-encoding: string
           script: |
             const newVersion = ${{steps.new_tag.outputs.result}};
             const releaseBody = '#' + context.payload.pull_request.number + ' ' + context.payload.pull_request.title
