@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: Hello world action step
         id: hello
-        uses: RyoichiNoguchi/jira-action@v1.2
+        uses: RyoichiNoguchi/jira-action@v1.3
         with:
           username: ${{ secrets.JRIA_USERNAME }}
           password: ${{ secrets.JIRA_PASSWORD }}
