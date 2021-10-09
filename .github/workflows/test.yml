@@ -58,21 +58,7 @@ jobs:
               draft: false,
               prerelease: false
             });
-            return response.data;
-      - name: Get new release name
-        uses: actions/github-script@v4
-        id: get_release_name
-        with:
-          script: |
-            const name = ${{steps.create_tag_and_release.outputs.result.name}};
-            return name;
-      - name: Get new release url
-        uses: actions/github-script@v4
-        id: get_release_url
-        with:
-          script: |
-            const html_url = ${{steps.create_tag_and_release.outputs.result.html_url}};
-            return html_url;
+            return response.data.html_url;
       - name: Create jira release
         id: create_jira_release
         uses: RyoichiNoguchi/jira-action@v1.0.0
@@ -81,6 +67,6 @@ jobs:
           password: ${{ secrets.JIRA_PASSWORD }}
           domain: ${{ secrets.JIRA_DOMAIN }}
           projectId: ${{ secrets.JIRA_PROJECT_ID }}
-          releaseName: ${{steps.get_release_name.outputs.result}}
-          description: ${{steps.get_release_url.outputs.result}}
+          releaseName: ${{steps.new_tag.outputs.result}}
+          description: ${{steps.create_tag_and_release.outputs.result}}
           issueKeyText: ${{ secrets.TEST_KEY_TEXT }}
