@@ -45,6 +45,7 @@ jobs:
       - name: Create tag and release
         uses: actions/github-script@v4
         id: create_tag_and_release
+        result-encoding: string
         with:
           script: |
             const newVersion = ${{steps.new_tag.outputs.result}};
@@ -58,7 +59,7 @@ jobs:
               draft: false,
               prerelease: false
             });
-            return response.data.html_url;
+            return "test "+ response.data.html_url;
       - name: Create jira release
         id: create_jira_release
         uses: RyoichiNoguchi/jira-action@v1.0.0
