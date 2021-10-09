@@ -14,6 +14,6 @@ jobs:
           password: ${{ secrets.JIRA_PASSWORD }}
           domain: ${{ secrets.JIRA_DOMAIN }}
           projectId: ${{ secrets.JIRA_PROJECT_ID }}
-          releaseName: 'test2'
+          releaseName: 'test3'
           description: 'test'
           issueKeyText: 'test'
