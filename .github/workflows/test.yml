@@ -49,7 +49,7 @@ jobs:
           script: |
             const newVersion = ${{steps.new_tag.outputs.result}};
             const releaseBody = '#' + context.payload.pull_request.number + ' ' + context.payload.pull_request.title
-            await github.repos.createRelease({
+            const response = await github.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: newVersion,
@@ -58,3 +58,15 @@ jobs:
               draft: false,
               prerelease: false
             })
+            return response.data;
+      - name: Create jira release
+        id: create_jira_release
+        uses: RyoichiNoguchi/jira-action@v1.0.0
+        with:
+          username: ${{ secrets.JRIA_USERNAME }}
+          password: ${{ secrets.JIRA_PASSWORD }}
+          domain: ${{ secrets.JIRA_DOMAIN }}
+          projectId: ${{ secrets.JIRA_PROJECT_ID }}
+          releaseName: ${{steps.create_tag_and_release.outputs.result.name}};
+          description: ${{steps.create_tag_and_release.outputs.result.html_url}};
+          issueKeyText: ${{ secrets.TEST_KEY_TEXT }}
