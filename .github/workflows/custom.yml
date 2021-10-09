@@ -10,7 +10,13 @@ jobs:
         id: hello
         uses: RyoichiNoguchi/jira-action@v1
         with:
-          who-to-greet: 'Mona the Octocat'
+          username: ${{ secrets.JIRA_USERNAME }}
+          password: ${{ secrets.JIRA_PASSWORD }}
+          domain: ${{ secrets.JIRA_DOMAIN }}
+          projectId: ${{ secrets.JIRA_PROJECT_ID }}
+          releaseName: 'test'
+          description: 'test'
+          issueKeyText: 'test'
       # Use the output from the `hello` step
       - name: Get the output time
         run: echo "The time was ${{ steps.hello.outputs.time }}"
