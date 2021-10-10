@@ -11,11 +11,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Check latest tag
-        uses: actions/github-script@v4
+        uses: actions/github-script@v5
         id: latest-tag
         with:
           script: |
-            const releases = await github.repos.listReleases({
+            const releases = await github.rest.repos.listReleases({
               owner: context.repo.owner,
               repo: context.repo.repo,
             })
@@ -43,14 +43,14 @@ jobs:
             const newVersion = [major,minor,patch].join('.');
             return newVersion;
       - name: Create tag and release
-        uses: actions/github-script@v4
+        uses: actions/github-script@v5
         id: create_tag_and_release
         with:
           result-encoding: string
           script: |
             const newVersion = ${{steps.new_tag.outputs.result}};
             const releaseBody = '#' + context.payload.pull_request.number + ' ' + context.payload.pull_request.title
-            const response = await github.repos.createRelease({
+            const response = await github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: newVersion,
@@ -61,7 +61,7 @@ jobs:
             });
             return response.data.html_url;
       - name: Create jira release name
-        uses: actions/github-script@v4
+        uses: actions/github-script@v5
         id: create_jira_release_name
         with:
           result-encoding: string
