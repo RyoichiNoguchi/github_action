@@ -70,7 +70,7 @@ jobs:
             return jiraReleaseName;
       - name: Create jira release
         id: create_jira_release
-        uses: RyoichiNoguchi/jira-action@v1.0.0
+        uses: RyoichiNoguchi/jira-action@v1.0.1
         with:
           username: ${{ secrets.JRIA_USERNAME }}
           password: ${{ secrets.JIRA_PASSWORD }}
