@@ -78,4 +78,4 @@ jobs:
           projectId: ${{ secrets.JIRA_PROJECT_ID }}
           releaseName: ${{steps.create_jira_release_name.outputs.result}}
           description: ${{steps.create_tag_and_release.outputs.result}}
-          issueKeyText: ${{ secrets.TEST_KEY_TEXT }}
+          issueKeyText: ${{ github.event.pull_request.title }}
